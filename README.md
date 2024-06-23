@@ -1,6 +1,38 @@
-# GithubWorkspace
+# Angular GitHub Search Application
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.5.
+## Overview
+
+This application allows users to search for GitHub repositories and commits using the GitHub API. It features two main views:
+
+- `/repos`: Search for repositories by name, optionally filtered by language and minimum number of stars, or by text contained in the title of an issue.
+- `/commits`: View the list of commits for a selected repository.
+
+## Features
+
+- **Lazy Loaded Routes**: The application has two lazy-loaded routes, `/repos` and `/commits`.
+- **Search Repositories**: Search for repositories by name, language, and stars, or by text in issue titles.
+- **Repository Details**: Display repository name, owner avatar, and creation date.
+- **Commit Details**: Display commit author, URL, and commit message.
+- **UI Components**: Uses Angular Material components for UI and Tailwind CSS for styling.
+
+## Changes Made
+
+### General
+
+1. **Lazy Loading**: Added lazy-loaded routes for `/repos` and `/commits`.
+2. **Angular Material**: Added Angular Material for UI components and Tailwind CSS for styling.
+
+### Repos Feature
+
+- **RepoListComponent**: Component to search and display repositories.
+- **RepoService**: Service to interact with the GitHub API for repository data.
+- **Repo Entities**: Interfaces to define repository data structures.
+
+### Commits Feature
+
+- **CommitListComponent**: Component to search and display commits.
+- **CommitService**: Service to interact with the GitHub API for commit data.
+- **Commit Entities**: Interfaces to define commit data structures.
 
 ## Development server
 

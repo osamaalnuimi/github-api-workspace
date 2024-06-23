@@ -1,1 +1,120 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+$ax-blue-palette: (
+  // should be same as in tailwind.config.js
+  50: #eff6ff,
+  100: #dbeafe,
+  200: #bfdbfe,
+  300: #93c5fd,
+  400: #60a5fa,
+  500: #3b82f6,
+  600: #4c73db,
+  700: #2852c8,
+  800: #2144a6,
+  900: #1d3c91,
+  contrast: (
+    50: #000,
+    100: #000,
+    200: #000,
+    300: #000,
+    400: #000,
+    500: #fff,
+    600: #fff,
+    700: #fff,
+    800: #fff,
+    900: #fff,
+  )
+);
+
+// Define the theme object.
+$github-app-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+:root {
+  @include mat.all-component-themes($github-app-theme);
+}
+
+// Comment out the line below if you want to use the pre-defined typography utility classes.
+// For more information: https://material.angular.io/guide/typography#using-typography-styles-in-your-application.
+// @include mat.typography-hierarchy($github-app-theme);
+
+// Comment out the line below if you want to use the deprecated `color` inputs.
+// @include mat.color-variants-backwards-compatibility($github-app-theme);
 /* You can add global styles to this file, and also import other style files */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  @apply h-full;
+}
+
+body {
+  @apply m-0 font-sans;
+}
+
+h1 {
+  @apply text-5xl font-black mb-8;
+}
+
+h2 {
+  @apply text-3xl font-black mb-4;
+}
+
+p {
+  @apply text-lg mb-4;
+
+  &.subtitle {
+    @apply text-2xl leading-relaxed text-slate-600;
+  }
+}
+
+ul {
+  @apply list-disc text-lg ml-4 mb-4;
+
+  li {
+    @apply py-2;
+  }
+
+  &.checklist {
+    @apply list-none;
+
+    li {
+      @apply relative pl-8;
+
+      &::before {
+        @apply absolute left-0 top-2;
+        content: '✅';
+      }
+    }
+  }
+}
+
+code {
+  @apply inline-block mx-2 px-2 bg-blue-200 rounded;
+}
