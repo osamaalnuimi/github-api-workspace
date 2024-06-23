@@ -15,6 +15,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { debounceTime, switchMap } from 'rxjs';
 import { CommitStore } from '../domain/state/commit.store';
+import { CommitListEntryComponent } from '../components/commit-list-entry/commit-list-entry.component';
 
 @Component({
   selector: 'github-commit-list',
@@ -22,7 +23,7 @@ import { CommitStore } from '../domain/state/commit.store';
   imports: [
     DatePipe,
     ReactiveFormsModule,
-    MatTableModule,
+    CommitListEntryComponent,
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinner,
@@ -35,17 +36,18 @@ export class CommitListComponent implements OnInit {
   private readonly commitService = inject(CommitStore);
 
   private destroyRef = inject(DestroyRef);
-  displayedColumns: string[] = ['author', 'url', 'message'];
 
   vm = this.commitService.vm;
 
-  repo = input.required<string>();
-  owner = input.required<string>();
+  repo = input.required<string>(); // pass from router
+  owner = input.required<string>(); // pass from router
 
   query = new FormControl();
   ngOnInit(): void {
     this.getCommits({ owner: this.owner(), repo: this.repo() });
-
+    this.listenToFormChanges();
+  }
+  private listenToFormChanges() {
     this.query.valueChanges
       .pipe(
         debounceTime(300),

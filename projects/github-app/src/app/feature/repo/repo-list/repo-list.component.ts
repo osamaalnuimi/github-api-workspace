@@ -82,6 +82,7 @@ export class RepoListComponent implements OnInit {
       )
       .subscribe();
   }
+
   /**
    * Updates the form controls based on the provided queryBy.
    *
