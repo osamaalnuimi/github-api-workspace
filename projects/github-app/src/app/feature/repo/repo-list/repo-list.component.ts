@@ -18,9 +18,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 import { debounceTime, filter, switchMap } from 'rxjs';
+import { RepoListEntryComponent } from '../components/repo-list-entry/repo-list-entry.component';
 import { RepoStore } from '../domain/state/repo.store';
 
 @Component({
@@ -31,10 +31,10 @@ import { RepoStore } from '../domain/state/repo.store';
     ReactiveFormsModule,
     RouterLink,
     MatProgressSpinnerModule,
-    MatTableModule,
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
+    RepoListEntryComponent,
   ],
   templateUrl: './repo-list.component.html',
   styleUrl: './repo-list.component.scss',
@@ -46,7 +46,6 @@ export class RepoListComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   vm = this.repoDataService.vm;
-  displayedColumns: string[] = ['name', 'owner', 'created_at'];
 
   repoForm: FormGroup = this.fb.nonNullable.group({
     filterType: ['name', Validators.required],
