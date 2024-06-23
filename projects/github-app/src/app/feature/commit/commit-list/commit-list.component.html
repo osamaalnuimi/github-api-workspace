@@ -15,7 +15,7 @@
     </div>
   }
   @case ('success') {
-    @if (!vm().data) {
+    @if (!vm().data?.length) {
       <div class="text-center mt-4 text-gray-500">
         <p>No commits found.</p>
       </div>

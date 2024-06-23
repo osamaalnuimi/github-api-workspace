@@ -44,12 +44,18 @@ export class CommitListComponent implements OnInit {
 
   query = new FormControl();
   ngOnInit(): void {
-    this.searchCommits({ owner: this.owner(), repo: this.repo() });
+    this.getCommits({ owner: this.owner(), repo: this.repo() });
 
     this.query.valueChanges
       .pipe(
         debounceTime(300),
         switchMap(query => {
+          if (!query) {
+            return this.commitService.getCommits({
+              owner: this.owner(),
+              repo: this.repo(),
+            });
+          }
           return this.commitService.searchCommits({
             owner: this.owner(),
             repo: this.repo(),
@@ -60,7 +66,7 @@ export class CommitListComponent implements OnInit {
       )
       .subscribe();
   }
-  searchCommits(query: { owner: string; repo: string; message?: string }) {
-    this.commitService.searchCommits(query).subscribe();
+  getCommits(query: { owner: string; repo: string; message?: string }) {
+    this.commitService.getCommits(query).subscribe();
   }
 }

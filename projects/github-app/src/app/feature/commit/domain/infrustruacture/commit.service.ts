@@ -17,23 +17,22 @@ export class CommitService {
    * @return {Observable<CommitResponse[]>} An observable that emits the commit response.
    */
   getCommits(filter: commitFilter): Observable<CommitResponse[]> {
-    const headers = new HttpHeaders({
-      Accept: 'application/vnd.github.cloak-preview',
-    });
+    return this.http.get<CommitResponse[]>(
+      `${this.API_URL}/repos/${filter.owner}/${filter.repo}/commits`
+    );
+  }
 
+  getCommitBySearch(filter: commitFilter): Observable<CommitResponse[]> {
     let params = new HttpParams();
     if (filter.message) {
       params = new HttpParams().set(
         'q',
-        `${filter.message}+repo:${filter.owner}/${filter.repo}`
+        `${filter.message}+repo:${filter.owner}/${filter.repo}&type=Commits`
       );
     }
-    return this.http.get<CommitResponse[]>(
-      `${this.API_URL}/repos/${filter.owner}/${filter.repo}/commits`,
-      {
-        headers,
-        params,
-      }
-    );
+
+    return this.http.get<CommitResponse[]>(`${this.API_URL}/search/commits`, {
+      params,
+    });
   }
 }

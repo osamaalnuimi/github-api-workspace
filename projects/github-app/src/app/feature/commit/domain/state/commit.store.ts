@@ -19,6 +19,34 @@ export class CommitStore {
     httpCallStatus: 'initial',
     error: null,
   });
+
+  /**
+   * Searches for commits based on the provided filter and updates the state accordingly.
+   *
+   * @param {commitFilter} filter - The filter to apply when searching for commits.
+   * @return {Observable<void>} An observable that emits `undefined` if an error occurs, or completes without emitting otherwise.
+   */
+  getCommits(filter: commitFilter): Observable<void> {
+    this.vm.set({ data: undefined, httpCallStatus: 'loading', error: null });
+    return this.commitService.getCommits(filter).pipe(
+      map(commit => {
+        return this.vm.set({
+          data: commit,
+          httpCallStatus: 'success',
+          error: null,
+        });
+      }),
+      catchError(() => {
+        this.vm.set({
+          data: undefined,
+          httpCallStatus: 'error',
+          error: 'Something went wrong!',
+        });
+        return of(undefined);
+      })
+    );
+  }
+
   /**
    * Searches for commits based on the provided filter and updates the state accordingly.
    *
@@ -27,7 +55,7 @@ export class CommitStore {
    */
   searchCommits(filter: commitFilter): Observable<void> {
     this.vm.set({ data: undefined, httpCallStatus: 'loading', error: null });
-    return this.commitService.getCommits(filter).pipe(
+    return this.commitService.getCommitBySearch(filter).pipe(
       map(commit => {
         return this.vm.set({
           data: commit,
