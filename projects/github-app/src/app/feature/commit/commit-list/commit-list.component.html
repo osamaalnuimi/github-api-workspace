@@ -1,0 +1,65 @@
+<div class="mb-4">
+  <mat-form-field appearance="fill" class="w-full">
+    <mat-label>Search Commits by Message</mat-label>
+    <input matInput [formControl]="query" type="text" class="w-full" />
+  </mat-form-field>
+</div>
+
+@switch (vm().httpCallStatus) {
+  @case ('initial') {
+    <div class="text-center mt-4 text-gray-500">Search Commits</div>
+  }
+  @case ('loading') {
+    <div class="flex justify-center items-center h-32">
+      <mat-spinner></mat-spinner>
+    </div>
+  }
+  @case ('success') {
+    @if (!vm().data) {
+      <div class="text-center mt-4 text-gray-500">
+        <p>No commits found.</p>
+      </div>
+    } @else {
+      @defer (on viewport) {
+        <table
+          mat-table
+          [dataSource]="vm().data || []"
+          class="mat-elevation-z8 w-full">
+          <ng-container matColumnDef="author">
+            <th mat-header-cell *matHeaderCellDef class="text-left">Author</th>
+            <td mat-cell *matCellDef="let commit" class="text-left">
+              {{ commit.commit.author.name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="url">
+            <th mat-header-cell *matHeaderCellDef class="text-left">URL</th>
+            <td mat-cell *matCellDef="let commit" class="text-left">
+              <a
+                [href]="commit.html_url"
+                target="_blank"
+                class="text-blue-500 hover:underline"
+                >View Commit</a
+              >
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="message">
+            <th mat-header-cell *matHeaderCellDef class="text-left">Message</th>
+            <td mat-cell *matCellDef="let commit" class="text-left">
+              {{ commit.commit.message }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      } @placeholder {
+        <div class="text-center mt-4 text-gray-500">No commits found</div>
+      }
+    }
+  }
+  @case ('error') {
+    <div class="text-center mt-4 text-gray-500">Something went wrong</div>
+  }
+}
