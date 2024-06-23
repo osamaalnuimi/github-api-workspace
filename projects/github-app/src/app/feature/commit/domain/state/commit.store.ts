@@ -1,11 +1,11 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Observable, catchError, delay, map, of } from 'rxjs';
-import { CommitResponse } from '../entities/commit.interface';
+import { Commit } from '../entities/commit.interface';
+import { CommitFilter } from '../entities/commitFilter.interface';
 import { CommitService } from '../infrustruacture/commit.service';
-import { commitFilter } from '../entities/commitFilter.interface';
 
 interface State {
-  data: CommitResponse[] | undefined;
+  data: Commit[] | undefined;
   httpCallStatus: 'initial' | 'loading' | 'success' | 'error';
   error: string | null;
 }
@@ -23,15 +23,20 @@ export class CommitStore {
   /**
    * Searches for commits based on the provided filter and updates the state accordingly.
    *
-   * @param {commitFilter} filter - The filter to apply when searching for commits.
+   * @param {CommitFilter} filter - The filter to apply when searching for commits.
    * @return {Observable<void>} An observable that emits `undefined` if an error occurs, or completes without emitting otherwise.
    */
-  getCommits(filter: commitFilter): Observable<void> {
+  getCommits(filter: CommitFilter): Observable<void> {
     this.vm.set({ data: undefined, httpCallStatus: 'loading', error: null });
     return this.commitService.getCommits(filter).pipe(
-      map(commit => {
+      map(commits => {
+        const data = commits.map(commit => ({
+          author: commit.commit.author.name,
+          url: commit.html_url,
+          message: commit.commit.message,
+        }));
         return this.vm.set({
-          data: commit,
+          data: data,
           httpCallStatus: 'success',
           error: null,
         });
@@ -50,20 +55,28 @@ export class CommitStore {
   /**
    * Searches for commits based on the provided filter and updates the state accordingly.
    *
-   * @param {commitFilter} filter - The filter to apply when searching for commits.
+   * @param {CommitFilter} filter - The filter to apply when searching for commits.
    * @return {Observable<void>} An observable that emits `undefined` if an error occurs, or completes without emitting otherwise.
    */
-  searchCommits(filter: commitFilter): Observable<void> {
+  searchCommits(filter: CommitFilter): Observable<void> {
     this.vm.set({ data: undefined, httpCallStatus: 'loading', error: null });
     return this.commitService.getCommitBySearch(filter).pipe(
-      map(commit => {
+      delay(1000),
+      map(commits => {
+        const data: Commit[] = commits.items.map(item => ({
+          author: item.author?.login ?? '',
+          url: item.html_url || '',
+          message: item.commit.message ?? '',
+        }));
+
         return this.vm.set({
-          data: commit,
+          data: data,
           httpCallStatus: 'success',
           error: null,
         });
       }),
-      catchError(() => {
+      catchError(error => {
+        console.log(error);
         this.vm.set({
           data: undefined,
           httpCallStatus: 'error',

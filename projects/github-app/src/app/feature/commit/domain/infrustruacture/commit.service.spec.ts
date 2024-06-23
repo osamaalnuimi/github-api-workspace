@@ -4,8 +4,8 @@ import {
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { environment } from '../../../../../environments/environment';
-import { CommitResponse } from '../entities/commit.interface';
-import { commitFilter } from '../entities/commitFilter.interface';
+import { CommitResponse } from '../entities/github-commit.interface';
+import { CommitFilter } from '../entities/commitFilter.interface';
 import { CommitService } from './commit.service';
 
 describe('CommitService', () => {
@@ -29,7 +29,7 @@ describe('CommitService', () => {
   });
 
   it('should call the API to get commits', async () => {
-    const filter: commitFilter = {
+    const filter: CommitFilter = {
       owner: 'owner',
       repo: 'repo',
       message: 'message',
