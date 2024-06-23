@@ -1,4 +1,4 @@
-import { DatePipe, JsonPipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,14 +7,14 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { CommitStore } from '../domain/state/commit.store';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatTableModule } from '@angular/material/table';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
+import { debounceTime, switchMap } from 'rxjs';
+import { CommitStore } from '../domain/state/commit.store';
 
 @Component({
   selector: 'github-commit-list',

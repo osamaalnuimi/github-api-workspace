@@ -1,4 +1,4 @@
-export interface commitFilter {
+export interface CommitFilter {
   owner: string;
   repo: string;
   message?: string;
